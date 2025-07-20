@@ -1,11 +1,17 @@
 # Use Node.js LTS version
 FROM node:20-alpine
 
-# Create app directory
+# Set working directory
 WORKDIR /usr/src/app
+
+# Install required system packages and pnpm
+RUN apk add --no-cache curl && \
+    corepack enable && \
+    corepack prepare pnpm@latest --activate
 
 # Copy package files
 COPY package*.json ./
+COPY pnpm-lock.yaml ./
 
 # Install dependencies
 RUN pnpm install
@@ -16,8 +22,8 @@ COPY . .
 # Build TypeScript code
 RUN pnpm run build
 
-# Expose port 8080 (matching the server configuration)
+# Expose port (match your Express app)
 EXPOSE 8080
 
 # Start the application
-CMD ["pnpm", "start"] 
+CMD ["pnpm", "start"]
