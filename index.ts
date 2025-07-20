@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // home route
 app.get("/", (req, res) => {
-  res.json({ message: "KebapGuide-API." });
+  res.json({ message: "MoriTomo-API." });
 });
 
 
