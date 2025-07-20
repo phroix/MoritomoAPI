@@ -1,0 +1,27 @@
+import express, { Express, Request, Response } from "express";
+import dotenv from "dotenv";
+import bodyParser from "body-parser";
+
+dotenv.config();
+
+const app: Express = express();
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+
+// home route
+app.get("/", (req, res) => {
+  res.json({ message: "KebapGuide-API." });
+});
+
+
+//routes
+require("./routes/auth.routes")(app);
+require("./routes/user.routes")(app);
+require("./routes/admin.routes")(app);
+require("./routes/test.routes")(app);
+
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => {
+  console.log("Server is running on Port", PORT);
+});
