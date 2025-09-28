@@ -37,12 +37,15 @@ jobs:
 
       - name: Deploy on remote server via SSH
         run: |
-          ssh -i ~/.ssh/github_moritomo root@188.245.171.137 << 'EOF'
+          ssh -i ~/.ssh/github_moritomo root@188.245.171.137 << EOF
             echo "Stoppe laufenden Container (falls aktiv)..."
             docker rm -f moritomoapi || true
 
             echo "Lösche altes Image (damit :latest wirklich neu ist)..."
             docker image rm ghcr.io/phroix/moritomoapi:latest || true
+
+            echo "Login zu GHCR auf dem Remote-Host..."
+            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u phroix --password-stdin
 
             echo "Pull neues Image..."
             docker pull ghcr.io/phroix/moritomoapi:latest
