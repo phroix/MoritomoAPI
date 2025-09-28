@@ -12,7 +12,7 @@ app.use(body_parser_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 // home route
 app.get("/", (req, res) => {
-    res.json({ message: "KebapGuide-API." });
+    res.json({ message: "MoriTomo-API v1.0.0" });
 });
 //routes
 require("./routes/auth.routes")(app);

@@ -1,5 +1,6 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 const { authController } = require("../controller/auth.controller");
+const { withSupabase } = require("../middleware/auth.middleware");
 
 const router = express.Router();
 
@@ -12,13 +13,8 @@ module.exports = (app: Application) => {
     next();
   });
 
-  router.post("/signup", authController.signup);
-  router.post("/signin", authController.signin);
-  router.post("/signout", authController.signout);
-  router.post("/forgotPassword", authController.forgotPassword);
-  router.post("/checkUserForKebap", authController.checkUserForKebap);
-  router.post("/refreshSession", authController.refreshSession);
-  router.post("/verifyOtp", authController.verifyOtp);
-  
+  router.post("/session", authController.login);
+  router.delete("/session", withSupabase, authController.logout);
+
   app.use("/v1/auth", router);
 };
