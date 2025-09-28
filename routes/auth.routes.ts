@@ -13,7 +13,6 @@ module.exports = (app: Application) => {
     next();
   });
 
-  
   router.post("/session", authController.login);
   router.delete("/session", withSupabase, authController.logout);
 
