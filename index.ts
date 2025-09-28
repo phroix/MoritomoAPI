@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // home route
 app.get("/", (req, res) => {
-  res.json({ message: "MoriTomo-API v1.0.0" });
+  res.json({ message: "MoriTomo-API v1.0" });
 });
 
 
