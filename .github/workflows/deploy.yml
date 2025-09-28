@@ -33,6 +33,7 @@ jobs:
           push: true
           tags: ghcr.io/phroix/moritomoapi:latest
           no-cache: true
+          provenance: false
 
       - name: Deploy on remote server via SSH
         run: |
