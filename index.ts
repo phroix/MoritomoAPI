@@ -16,9 +16,8 @@ app.get("/", (req, res) => {
 
 //routes
 require("./routes/auth.routes")(app);
-// require("./routes/user.routes")(app);
-// require("./routes/admin.routes")(app);
-// require("./routes/test.routes")(app);
+require("./routes/zaimu/overview.routes")(app);
+require("./routes/zaimu/transaction.routes")(app);
 
 const PORT = process.env.PORT || 8080;
 
