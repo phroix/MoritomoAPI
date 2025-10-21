@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
+import cors from "cors";
 
 dotenv.config();
 
@@ -8,11 +9,22 @@ const app: Express = express();
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
+const ORIGINS = [
+  "http://localhost:3000",
+  "https://moritomo.philroth.com", // dein Web-Frontend (falls vorhanden)
+];
+
+app.use(
+  cors({
+    origin: ORIGINS,
+    credentials: true,
+  })
+);
+
 // home route
 app.get("/", (req, res) => {
   res.json({ message: "MoriTomo-API v1.0" });
 });
-
 
 //routes
 require("./routes/auth.routes")(app);

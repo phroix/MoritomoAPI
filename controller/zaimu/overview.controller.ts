@@ -32,35 +32,33 @@ const getOverviews = async (req: ReqWithSupabase, res: Response) => {
 const getOverviewAmount = async (req: ReqWithSupabase, res: Response) => {
   try {
     const supabase = req.supabase;
-    const overviews = req.body.overviews;
-
+    const { date, id } = req.query;
     let totalAmount = 0;
 
-    for (const overview of overviews) {
-      let query = supabase.from("zaimu_transactions").select("amount,type");
+    // for (const overview of overviews) {
+    let query = supabase.from("zaimu_transactions").select("amount,type");
 
-      if (overview.id) {
-        query = query.eq("overview_id", overview.id);
-      }
-
-      if (overview.date) {
-        query = query.eq("date", overview.date);
-      }
-
-      const { data, error } = await query;
-
-      if (error) {
-        console.error("Error loading transactions:", error.message);
-        continue;
-      }
-
-      const subtotal =
-        data?.reduce((acc, curr) => {
-          return acc + (curr.type === "positive" ? curr.amount : -curr.amount);
-        }, 0) ?? 0;
-
-      totalAmount += subtotal;
+    if (id) {
+      query = query.eq("overview_id", id);
     }
+
+    if (date &&date != "null") {
+      query = query.eq("date", date);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error("Error loading transactions:", error.message);
+      return res.status(400).json({ error: error.message });
+    }
+
+    const subtotal =
+      data?.reduce((acc, curr) => {
+        return acc + (curr.type === "positive" ? curr.amount : -curr.amount);
+      }, 0) ?? 0;
+
+    totalAmount += subtotal;
 
     return res.status(200).json(totalAmount);
   } catch (error) {
