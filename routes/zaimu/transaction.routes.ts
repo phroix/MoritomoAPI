@@ -16,12 +16,12 @@ module.exports = (app: Application) => {
     next();
   });
 
-    router.get(
-      "/transactions/transactionsByOverview",
-      authMiddleware,
-      withSupabase,
-      transactionController.getTransactions
-    );
+  router.get(
+    "/transactions/transactionsByOverview",
+    authMiddleware,
+    withSupabase,
+    transactionController.getTransactions
+  );
   router.post(
     "/transactions/transaction",
     authMiddleware,

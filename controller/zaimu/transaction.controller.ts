@@ -5,17 +5,25 @@ const getTransactions = async (req: ReqWithSupabase, res: Response) => {
   try {
     const supabase = req.supabase;
 
-    const { date, overview_id, from, to } = req.query;
+    const { date, id, from, to, keep_data, type } = req.query;
+    const keepDataBoolean = keep_data === "true";
 
     let query = supabase
       .from("zaimu_transactions")
       .select("*")
       .range(Number(from), Number(to));
 
-    if (overview_id) {
-      query = query.eq("overview_id", overview_id);
+    if (type === "once") {
+      query = query.eq("overview_id", id);
+      query = query.eq("date", date);
     }
-    if (date) {
+
+    if (type === "monthly" && keepDataBoolean) {
+      query = query.eq("overview_id", id);
+    }
+
+    if (type === "monthly" && !keepDataBoolean) {
+      query = query.eq("overview_id", id);
       query = query.eq("date", date);
     }
 
