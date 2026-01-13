@@ -27,6 +27,9 @@ const getTransactions = async (req: ReqWithSupabase, res: Response) => {
       query = query.eq("date", date);
     }
 
+    // Sortiere nach created_at, neueste zuerst
+    query = query.order("created_at", { ascending: true });
+
     const { data, error } = await query;
 
     if (error) {
@@ -75,7 +78,7 @@ const createTransaction = async (req: ReqWithSupabase, res: Response) => {
 
     const body = req.body;
 
-    const { data, error } = await supabase
+    let { data, error } = await supabase
       .from("zaimu_transactions")
       .insert(body)
       .select();
@@ -83,6 +86,9 @@ const createTransaction = async (req: ReqWithSupabase, res: Response) => {
     if (error) {
       return res.status(400).json({ error: error.message });
     }
+
+    // data.created_at = new Date().toISOString();
+    console.log(data);
 
     return res.status(200).json(data);
   } catch (error) {
