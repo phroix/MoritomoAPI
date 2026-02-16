@@ -36,8 +36,6 @@ const getOverviewAmount = async (req: ReqWithSupabase, res: Response) => {
     const keepDataBoolean = keep_data === "true";
     let totalAmount = 0;
 
-    const { data: overviewData, error: overviewError } = await supabase.from("zaimu_overviews").select("multi").eq("id", id);
-
     // for (const overview of overviews) {
     let query = supabase.from("zaimu_transactions").select("amount,type");
 
@@ -69,9 +67,7 @@ const getOverviewAmount = async (req: ReqWithSupabase, res: Response) => {
 
     totalAmount += subtotal;
 
-    let paidAmmount = totalAmount * overviewData?.[0]?.multi;
-
-    return res.status(200).json({ totalAmount, paidAmmount });
+    return res.status(200).json(totalAmount);
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }
