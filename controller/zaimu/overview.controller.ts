@@ -36,7 +36,7 @@ const getOverviewAmount = async (req: ReqWithSupabase, res: Response) => {
     const keepDataBoolean = keep_data === "true";
     let totalAmount = 0;
 
-    const { data: overviewData, error: overviewError } = await supabase.from("zaimu_overviews").select("multi").eq("id", id);
+    const { data: overviewData, error: overviewError } = await supabase.from("zaimu_overviews").select("multi").eq("id", Number(id));
 
     // for (const overview of overviews) {
     let query = supabase.from("zaimu_transactions").select("amount,type");
@@ -69,7 +69,7 @@ const getOverviewAmount = async (req: ReqWithSupabase, res: Response) => {
 
     totalAmount += subtotal;
 
-    let paidAmmount = totalAmount * overviewData?.[0]?.multi;
+    let paidAmmount = totalAmount * (overviewData?.[0]?.multi ?? 1);
 
     return res.status(200).json({ totalAmount, paidAmmount });
   } catch (error) {
