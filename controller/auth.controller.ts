@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { createClient } from "@supabase/supabase-js";
+import type { Database } from "../types/database.types";
 import { ReqWithSupabase } from "../types/SupabaseClient";
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -9,7 +10,7 @@ const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
-    const supabase = createClient(SUPABASE_URL!, SUPABASE_KEY!, {
+    const supabase = createClient<Database>(SUPABASE_URL!, SUPABASE_KEY!, {
       auth: {
         persistSession: false,
         detectSessionInUrl: false,

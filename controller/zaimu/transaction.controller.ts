@@ -14,17 +14,17 @@ const getTransactions = async (req: ReqWithSupabase, res: Response) => {
       .range(Number(from), Number(to));
 
     if (type === "once") {
-      query = query.eq("overview_id", id);
-      query = query.eq("date", date);
+      query = query.eq("overview_id", Number(id));
+      query = query.eq("date", date as string);
     }
 
     if (type === "monthly" && keepDataBoolean) {
-      query = query.eq("overview_id", id);
+      query = query.eq("overview_id", Number(id));
     }
 
     if (type === "monthly" && !keepDataBoolean) {
-      query = query.eq("overview_id", id);
-      query = query.eq("date", date);
+      query = query.eq("overview_id", Number(id));
+      query = query.eq("date", date as string);
     }
 
     // Sortiere nach created_at, neueste zuerst
@@ -54,10 +54,10 @@ const getTransactionsAmount = async (req: ReqWithSupabase, res: Response) => {
       .range(Number(from), Number(to));
 
     if (overview_id) {
-      query = query.eq("overview_id", overview_id);
+      query = query.eq("overview_id", Number(overview_id));
     }
     if (date) {
-      query = query.eq("date", date);
+      query = query.eq("date", date as string);
     }
 
     const { data, error } = await query;
@@ -106,7 +106,7 @@ const updateTransaction = async (req: ReqWithSupabase, res: Response) => {
     const { data, error } = await supabase
       .from("zaimu_transactions")
       .update(body)
-      .eq("id", id)
+      .eq("id", Number(id))
       .select();
 
     if (error) {
@@ -128,7 +128,7 @@ const deleteTransaction = async (req: ReqWithSupabase, res: Response) => {
     const { data, error } = await supabase
       .from("zaimu_transactions")
       .delete()
-      .eq("id", id)
+      .eq("id", Number(id))
       .select();
 
     if (error) {

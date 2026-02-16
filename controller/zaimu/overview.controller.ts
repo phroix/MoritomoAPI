@@ -13,7 +13,7 @@ const getOverviews = async (req: ReqWithSupabase, res: Response) => {
     const { data, error } = await supabase
       .from("zaimu_overviews")
       .select("*")
-      .eq("user_id", user_id)
+      .eq("user_id", user_id as string)
       .or(
         `type.eq.${filterTypeMonthly},and(type.eq.${filterTypeOnce},date.eq.${date})`
       )
@@ -42,17 +42,17 @@ const getOverviewAmount = async (req: ReqWithSupabase, res: Response) => {
     let query = supabase.from("zaimu_transactions").select("amount,type");
 
     if (type === "once") {
-      query = query.eq("overview_id", id);
-      query = query.eq("date", date);
+      query = query.eq("overview_id", Number(id));
+      query = query.eq("date", date as string);
     }
 
     if (type === "monthly" && keepDataBoolean) {
-      query = query.eq("overview_id", id);
+      query = query.eq("overview_id", Number(id));
     }
 
     if (type === "monthly" && !keepDataBoolean) {
-      query = query.eq("overview_id", id);
-      query = query.eq("date", date);
+      query = query.eq("overview_id", Number(id));
+      query = query.eq("date", date as string);
     }
 
     const { data, error } = await query;
@@ -108,7 +108,7 @@ const updateOverview = async (req: ReqWithSupabase, res: Response) => {
     const { data, error } = await supabase
       .from("zaimu_overviews")
       .update(body)
-      .eq("id", id)
+      .eq("id", Number(id))
       .select();
 
     if (error) {
@@ -130,7 +130,7 @@ const deleteOverview = async (req: ReqWithSupabase, res: Response) => {
     const { data, error } = await supabase
       .from("zaimu_overviews")
       .delete()
-      .eq("id", id)
+      .eq("id", Number(id))
       .select();
 
     if (error) {

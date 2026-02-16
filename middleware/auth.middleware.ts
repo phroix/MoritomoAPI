@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { createClient } from "@supabase/supabase-js";
+import type { Database } from "../types/database.types";
 const secret = process.env.JWT_SECRET;
 
 const authMiddleware = (
@@ -44,7 +45,7 @@ export async function withSupabase(
   const access = req.headers.authorization?.replace(/^Bearer\s+/i, "");
   const refresh = req.headers["x-refresh-token"] as string | undefined;
 
-  const client = createClient(SUPABASE_URL!, SUPABASE_KEY!, {
+  const client = createClient<Database>(SUPABASE_URL!, SUPABASE_KEY!, {
     auth: {
       persistSession: false,
       detectSessionInUrl: false,
