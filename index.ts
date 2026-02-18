@@ -30,6 +30,8 @@ app.get("/", (req, res) => {
 require("./routes/auth.routes")(app);
 require("./routes/zaimu/overview.routes")(app);
 require("./routes/zaimu/transaction.routes")(app);
+require("./routes/koujou/workout.routes")(app);
+
 
 const PORT = process.env.PORT || 8080;
 
